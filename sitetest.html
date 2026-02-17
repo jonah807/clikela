@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>SYSTEM OVERRIDE</title>
+<style>
+body{
+    margin:0;
+    background:black;
+    color:#00ff00;
+    font-family:monospace;
+    overflow:hidden;
+    cursor:none;
+}
+#terminal{
+    position:fixed;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    padding:5px;
+    font-size:11px;
+    line-height:13px;
+}
+.popup{
+    position:fixed;
+    width:280px;
+    height:120px;
+    background:red;
+    color:black;
+    font-weight:bold;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    animation:shake 0.15s infinite;
+    z-index:5;
+}
+#troll{
+    display:none;
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    color:#00ff00;
+    font-size:60px;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    z-index:10;
+}
+@keyframes shake{
+    0%{transform:translate(2px,-2px);}
+    50%{transform:translate(-2px,2px);}
+    100%{transform:translate(2px,-2px);}
+}
+</style>
+</head>
+<body>
+
+<div id="terminal"></div>
+
+<div id="troll">
+C'ÉTAIT UN TROLL <br><br>
+t trop nul 😂
+</div>
+
+<audio id="greenSound" loop>
+    <source src="https://www.soundjay.com/button/beep-07.wav" type="audio/wav">
+</audio>
+
+<script>
+
+// ===== PSEUDO FIXE =====
+const pseudo = "CAMCAM77206";
+
+// ===== GENERATEURS =====
+function randomString(len){
+    const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let out="";
+    for(let i=0;i<len;i++){
+        out+=chars[Math.floor(Math.random()*chars.length)];
+    }
+    return out;
+}
+function fakeIP(){
+    return `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`;
+}
+
+// ===== CLAVIER MÉCANIQUE =====
+let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function mechanicalKey(){
+    let osc=audioCtx.createOscillator();
+    let gain=audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.type="square";
+    osc.frequency.value=900;
+    gain.gain.value=0.01;
+    osc.start();
+    osc.stop(audioCtx.currentTime+0.02);
+}
+setInterval(mechanicalKey,35);
+
+// ===== TERMINAL =====
+const terminal=document.getElementById("terminal");
+
+let running = true;
+
+// défilement continu
+setInterval(()=>{
+    if(running){
+        terminal.innerHTML += randomString(80)+"<br>";
+        terminal.scrollTop = terminal.scrollHeight;
+    }
+},30);
+
+// ===== ARRÊTS DRAMATIQUES =====
+function dramaticPause(text, delay){
+    setTimeout(()=>{
+        running = false;
+        terminal.innerHTML += "<br>==============================<br>";
+        terminal.innerHTML += text + "<br>";
+        terminal.innerHTML += "==============================<br><br>";
+        terminal.scrollTop = terminal.scrollHeight;
+
+        setTimeout(()=>{
+            running = true;
+        },2000);
+
+    },delay);
+}
+
+// séquence d'arrêts
+dramaticPause("IDENTITY FOUND: EL**** Lo****",8000);
+dramaticPause("CARD DETECTED: 4821 7816 8436 2963",16000);
+dramaticPause("ROBLOX ACCOUNT FOUND: "+pseudo,24000);
+dramaticPause("PASSWORD FOUND: "+randomString(14),32000);
+dramaticPause("ROBux BALANCE: 0",40000);
+dramaticPause("ROBLOX PASSWORD CHANGED",48000);
+
+// ===== CHAOS FINAL =====
+setTimeout(()=>{
+    running = false;
+
+    for(let i=0;i<35;i++){
+        setTimeout(()=>{
+            let div=document.createElement("div");
+            div.className="popup";
+            div.style.top=Math.random()*90+"%";
+            div.style.left=Math.random()*90+"%";
+            div.innerHTML="ALERTE<br>SYSTÈME COMPROMIS";
+            document.body.appendChild(div);
+        },i*70);
+    }
+
+},55000);
+
+// ===== FIN TROLL =====
+setTimeout(()=>{
+    terminal.style.display="none";
+    document.getElementById("troll").style.display="flex";
+},60000);
+
+// ===== SON VERT =====
+const greenSound = document.getElementById("greenSound");
+greenSound.volume = 0.05;
+greenSound.play().catch(()=>{});
+
+document.addEventListener("contextmenu",e=>e.preventDefault());
+
+</script>
+
+</body>
+</html>
